@@ -42,5 +42,61 @@ class Product extends Model {
             ":idproduct"=>$this->getidproduct()
         ));
     }
+
+    public function checkPhoto()
+    {
+        if(file_exists($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR .
+        "res" . DIRECTORY_SEPARATOR .
+        "site" . DIRECTORY_SEPARATOR .
+        "img" . DIRECTORY_SEPARATOR .
+        "products" . DIRECTORY_SEPARATOR.
+        $this->getidproduct() . ".jpg")){
+            $url = "/res/site/img/products/".$this->getidproduct().".jpg";
+        }else{
+            $url = "/res/site/img/product.jpg";
+        }
+       return $this->setdesphoto($url);
+    }
+
+    public function getValues()
+    {
+        $this->checkPhoto();
+        $value = parent::getValues();
+        return $value;
+    }
+
+    public function setPhoto($photo)
+    {
+        $extension = explode('.', $photo["name"]);
+        $extension = end($extension);
+
+        switch ($extension) {
+            case 'jpg':
+            case 'jpeg':
+            $image = imagecreatefromjpeg($photo["tmp_name"]);
+            break;
+
+            case "png":
+                $image = imagecreatefrompng($photo["tmp_name"]);
+            break;
+
+            case "gif":
+                $image = imagecreatefromgif($photo["tmp_name"]);
+            break;
+        }
+
+        $dist = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR .
+        "res" . DIRECTORY_SEPARATOR .
+        "site" . DIRECTORY_SEPARATOR .
+        "img" . DIRECTORY_SEPARATOR .
+        "products" . DIRECTORY_SEPARATOR.
+        $this->getidproduct() . ".jpg";
+
+        imagejpeg($image, $dist);
+        imagedestroy($image);
+
+        $this->checkPhoto();
+
+    }
 }
 ?>

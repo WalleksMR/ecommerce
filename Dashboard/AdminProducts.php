@@ -53,6 +53,8 @@ $app->post('/admin/products/:idproduct', function($idproduct){
 	$Pro = new Product();
 	$Pro->get((int)$idproduct);
 	$Pro->setData($_POST);
+	$Pro->save();
+	$Pro->setPhoto($_FILES["file"]);
 
 	header("Location: /admin/products");
 	exit;
