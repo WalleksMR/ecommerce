@@ -1,4 +1,5 @@
 <?php 
+	use \hcode\Model\Product;
     use \hcode\Model\Category;
     use \hcode\Page;
 
@@ -8,7 +9,7 @@
 		$page = new Page();
 		$page->setTpl("category", array(
 			"category"=>$cat->getValues(),
-			"products"=>[]
+			"products"=>Product::checkList($cat->getProducts())
 		));
 	});
 ?>

@@ -1,7 +1,8 @@
 <?php 
     use hcode\PageAdmin;
     use hcode\Model\Category;
-    use hcode\Model\User;
+use hcode\Model\Product;
+use hcode\Model\User;
     // Categorias 
 $app->get('/admin/categories', function(){
 	User::verifyLoginAdmin();
@@ -53,6 +54,43 @@ $app->post('/admin/categories/:idcategory', function($idcategory){
 	$Cat->setData($_POST);
 	$Cat->update();
 	header("Location: /admin/categories");
+	exit;
+});
+
+$app->get('/admin/categories/:idcategory/products', function($idcategory){
+	User::verifyLoginAdmin();
+	$page = new PageAdmin();
+	$Cat = new Category();
+	$Cat->get((int)$idcategory);
+
+	$page->setTpl("categories-products", array(
+		"category"=>$Cat->getValues(),
+		"productsNotRelated"=>$Cat->getProducts(false),
+		"productsRelated"=>$Cat->getProducts()
+	));
+});
+
+$app->get('/admin/categories/:idcategory/products/:idproduct/add', function($idcategory, $idproduct){
+	User::verifyLoginAdmin();
+	$Cat = new Category();
+	$Prod = new Product();
+
+	$Cat->get((int)$idcategory);
+	$Prod->get((int)$idproduct);
+	$Cat->productAdd($Prod);
+	header('Location: /admin/categories/'.$idcategory.'/products');
+	exit;
+});
+
+$app->get('/admin/categories/:idcategory/products/:idproduct/remove', function($idcategory, $idproduct){
+	User::verifyLoginAdmin();
+	$Cat = new Category();
+	$Prod = new Product();
+
+	$Cat->get((int)$idcategory);
+	$Prod->get((int)$idproduct);
+	$Cat->productRemove($Prod);
+	header('Location: /admin/categories/'.$idcategory.'/products');
 	exit;
 });
 // FIM Categorias 
