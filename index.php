@@ -8,6 +8,7 @@ $app->config('debug', true);
 
 include_once("function.php");
 include_once("Ecommerce/Site.php");
+include_once("Ecommerce/SiteProduct.php");
 include_once("Ecommerce/SiteCategory.php");
 include_once("Dashboard/Admin.php");
 include_once("Dashboard/AdminUsers.php");
