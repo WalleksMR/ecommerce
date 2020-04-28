@@ -3,7 +3,7 @@
     use hcode\Model\User;
 
 $app->get('/admin', function() {
-    User::verifyLoginAdmin();
+	User::verifyLoginAdmin();
 	$page = new PageAdmin();
 	$page->setTpl("index");
 });

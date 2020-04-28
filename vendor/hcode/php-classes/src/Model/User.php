@@ -95,6 +95,7 @@ class User extends Model {
             ":pnrphon"=>$this->getnrphone(),
             ":pinadmin"=>$this->getinadmin()
         ));
+        
         $this->setData($resuts[0]);
     }
 
@@ -202,5 +203,14 @@ class User extends Model {
             ":iduser"=>$this->getiduser()
         ));
     }
+
+    public static function getPasswordHash($password)
+	{
+
+		return password_hash($password, PASSWORD_DEFAULT, [
+			'cost'=>12
+		]);
+
+	}
 }
 ?>
