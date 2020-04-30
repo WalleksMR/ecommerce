@@ -77,5 +77,31 @@ class Cart extends Model {
         ));
             $this->setData($resuts[0]);
     }
+
+    public function addProducts(Product $product)
+    {
+        $sql = new Sql();
+        $sql->query("INSERT INTO tb_cartsproducts (idcart, idproduct) VALUES(:idcart, :idproduct)", [
+            ":idcart"=>$this->getidcart(),
+            ":idproduct"=>$product->getidproduct()
+        ]);
+
+    }
+
+    public function removeProducts(Product $product, $all = false)
+    {
+        $sql = new Sql();
+        if($all){
+            $sql->query("UPDATE tb_cartsproducts SET dtremoved = NOW() WHERE idcart = :idcart AND idproduct = :idproduct AND dtremoved is NULL",[
+                ":idcart"=>$this->getidcart(),
+                ":idproduct"=>$product->getidproduct()
+            ]);
+        }else{
+            $sql->query("UPDATE tb_cartsproducts SET dtremoved = NOW() WHERE idcart = :idcart AND idproduct = :idproduct AND dtremoved is NULL LIMIT 1",[
+                ":idcart"=>$this->getidcart(),
+                ":idproduct"=>$product->getidproduct()
+            ]);
+        }
+    }
 }
 ?>

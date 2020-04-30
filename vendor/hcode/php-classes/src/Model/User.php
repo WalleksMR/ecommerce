@@ -134,7 +134,10 @@ class User extends Model {
     public static function getForgot($email)
     {
         $user = new Sql();
-        $resuts = $user->select("SELECT * FROM tb_persons a INNER JOIN tb_users b USING(idperson) WHERE a.desemail = :email", array(
+        $resuts = $user->select("SELECT * FROM tb_persons a
+        INNER JOIN tb_users b 
+        USING(idperson) 
+        WHERE a.desemail = :email", array(
             ":email"=>$email
         ));
          if(count($resuts) === 0) {
